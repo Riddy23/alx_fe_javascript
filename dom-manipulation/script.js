@@ -1,69 +1,67 @@
-// Initial quotes array
+// Array of quote objects
 let quotes = [
-  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-  { text: "Don’t let yesterday take up too much of today.", category: "Motivation" },
+  { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
   { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-  { text: "In the middle of difficulty lies opportunity.", category: "Inspiration" }
+  { text: "In the middle of every difficulty lies opportunity.", category: "Inspiration" }
 ];
 
-// DOM elements
-const quoteDisplay = document.getElementById("quoteDisplay");
-const categorySelect = document.getElementById("categorySelect");
-const newQuoteBtn = document.getElementById("newQuote");
-const addQuoteBtn = document.getElementById("addQuoteBtn");
-const newQuoteText = document.getElementById("newQuoteText");
-const newQuoteCategory = document.getElementById("newQuoteCategory");
-
-// Initialize category dropdown
-function populateCategories() {
-  // Get unique categories
-  const categories = [...new Set(quotes.map(q => q.category))];
-  
-  // Clear existing options
-  categorySelect.innerHTML = "";
-  
-  // Add category options
-  categories.forEach(category => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    categorySelect.appendChild(option);
-  });
-}
-
-// Show a random quote based on selected category
+// Function to show a random quote
 function showRandomQuote() {
-  const selectedCategory = categorySelect.value;
-  const filteredQuotes = quotes.filter(q => q.category === selectedCategory);
-  
-  if (filteredQuotes.length > 0) {
-    const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-    quoteDisplay.textContent = filteredQuotes[randomIndex].text;
-  } else {
-    quoteDisplay.textContent = "No quotes available for this category.";
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  if (quotes.length === 0) {
+    quoteDisplay.innerHTML = "<p>No quotes available.</p>";
+    return;
   }
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const randomQuote = quotes[randomIndex];
+  quoteDisplay.innerHTML = `<p>"${randomQuote.text}"<br><em>— ${randomQuote.category}</em></p>`;
 }
 
-// Add a new quote
+// Function to add a new quote
 function addQuote() {
-  const text = newQuoteText.value.trim();
-  const category = newQuoteCategory.value.trim();
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
+
+  const text = textInput.value.trim();
+  const category = categoryInput.value.trim();
 
   if (text && category) {
     quotes.push({ text, category });
-    newQuoteText.value = "";
-    newQuoteCategory.value = "";
-
-    populateCategories();
+    textInput.value = "";
+    categoryInput.value = "";
     alert("Quote added successfully!");
   } else {
-    alert("Please fill in both fields.");
+    alert("Please enter both quote text and category.");
   }
 }
 
-// Event listeners
-newQuoteBtn.addEventListener("click", showRandomQuote);
-addQuoteBtn.addEventListener("click", addQuote);
+// Function to dynamically create the Add Quote form
+function createAddQuoteForm() {
+  const formContainer = document.createElement("div");
 
-// Initialize app
-populateCategories();
+  const quoteInput = document.createElement("input");
+  quoteInput.type = "text";
+  quoteInput.id = "newQuoteText";
+  quoteInput.placeholder = "Enter a new quote";
+
+  const categoryInput = document.createElement("input");
+  categoryInput.type = "text";
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.placeholder = "Enter quote category";
+
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+  addButton.addEventListener("click", addQuote);
+
+  formContainer.appendChild(quoteInput);
+  formContainer.appendChild(categoryInput);
+  formContainer.appendChild(addButton);
+
+  document.body.appendChild(formContainer);
+}
+
+// Event listener for Show New Quote button
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+
+// Create the Add Quote form dynamically when the page loads
+createAddQuoteForm();
