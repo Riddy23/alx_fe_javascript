@@ -91,18 +91,28 @@ async function syncQuotes(newQuote = null) {
         if (newQuote) {
             await fetch(SERVER_URL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newQuote)
             });
         }
 
-        // GET latest quotes from server
+        // Fetch latest quotes from server
+        await fetchQuotesFromServer();
+
+    } catch (error) {
+        console.error("Error syncing quotes:", error);
+    }
+}
+
+// ====================
+// FETCH FROM SERVER
+// ====================
+async function fetchQuotesFromServer() {
+    try {
         const res = await fetch(SERVER_URL);
         const serverData = await res.json();
 
-        // Convert server data to our quote format
+        // Convert server data to quote format
         const serverQuotes = serverData.slice(0, 5).map(post => ({
             text: post.title,
             author: `User ${post.userId}`,
@@ -126,7 +136,7 @@ async function syncQuotes(newQuote = null) {
         }
 
     } catch (error) {
-        console.error("Error syncing quotes:", error);
+        console.error("Error fetching server quotes:", error);
     }
 }
 
@@ -151,4 +161,4 @@ function notifyUser(message) {
 // ====================
 // AUTO SYNC EVERY 15s
 // ====================
-setInterval(syncQuotes, 15000);
+setInterval(fetchQuotesFromServer, 15000);
