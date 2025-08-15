@@ -107,6 +107,9 @@ async function syncQuotes(newQuote = null) {
 // ====================
 // FETCH FROM SERVER
 // ====================
+// ====================
+// FETCH FROM SERVER
+// ====================
 async function fetchQuotesFromServer() {
     try {
         const res = await fetch(SERVER_URL);
@@ -132,13 +135,16 @@ async function fetchQuotesFromServer() {
             localStorage.setItem('quotes', JSON.stringify(quotes));
             populateCategories();
             displayRandomQuote();
-            notifyUser("Quotes updated from server!");
+
+            // Alert user of sync
+            alert("Quotes synced with server!");
         }
 
     } catch (error) {
         console.error("Error fetching server quotes:", error);
     }
 }
+
 
 // ====================
 // NOTIFICATION
