@@ -46,6 +46,7 @@ addQuoteForm.addEventListener('submit', e => {
     newQuoteAuthor.value = "";
     newQuoteCategory.value = "";
 
+    // Sync with server
     syncQuotes(newQuote);
 });
 
