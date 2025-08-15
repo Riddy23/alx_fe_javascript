@@ -23,6 +23,7 @@ const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 // ====================
 populateCategories();
 displayRandomQuote();
+syncQuotes();
 
 // ====================
 // EVENT LISTENERS
@@ -33,19 +34,19 @@ addQuoteForm.addEventListener('submit', e => {
     const author = newQuoteAuthor.value.trim() || "Unknown";
     const category = newQuoteCategory.value.trim() || "General";
 
-    if (text === "") return;
+    if (!text) return;
 
     const newQuote = { text, author, category };
     quotes.push(newQuote);
     localStorage.setItem('quotes', JSON.stringify(quotes));
     populateCategories();
     displayRandomQuote();
+
     newQuoteText.value = "";
     newQuoteAuthor.value = "";
     newQuoteCategory.value = "";
 
-    // Sync with server
-    postQuoteToServer(newQuote);
+    syncQuotes(newQuote);
 });
 
 categoryFilter.addEventListener('change', () => {
@@ -80,33 +81,34 @@ function populateCategories() {
     categoryFilter.value = localStorage.getItem('selectedCategory') || "all";
 }
 
-async function postQuoteToServer(quote) {
+// ====================
+// SYNC FUNCTION
+// ====================
+async function syncQuotes(newQuote = null) {
     try {
-        const response = await fetch(SERVER_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(quote)
-        });
-        const data = await response.json();
-        console.log("Quote synced with server:", data);
-    } catch (error) {
-        console.error("Error posting quote:", error);
-    }
-}
+        // POST new quote if provided
+        if (newQuote) {
+            await fetch(SERVER_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newQuote)
+            });
+        }
 
-async function fetchQuotesFromServer() {
-    try {
+        // GET latest quotes from server
         const res = await fetch(SERVER_URL);
         const serverData = await res.json();
+
+        // Convert server data to our quote format
         const serverQuotes = serverData.slice(0, 5).map(post => ({
             text: post.title,
             author: `User ${post.userId}`,
             category: "Server"
         }));
 
-        // Conflict resolution: server quotes overwrite if new
+        // Conflict resolution: add only new quotes
         let updated = false;
         serverQuotes.forEach(sq => {
             if (!quotes.some(lq => lq.text === sq.text)) {
@@ -119,15 +121,33 @@ async function fetchQuotesFromServer() {
             localStorage.setItem('quotes', JSON.stringify(quotes));
             populateCategories();
             displayRandomQuote();
-            console.log("Quotes updated from server");
+            notifyUser("Quotes updated from server!");
         }
 
     } catch (error) {
-        console.error("Error fetching server quotes:", error);
+        console.error("Error syncing quotes:", error);
     }
+}
+
+// ====================
+// NOTIFICATION
+// ====================
+function notifyUser(message) {
+    const notification = document.createElement("div");
+    notification.textContent = message;
+    notification.style.position = "fixed";
+    notification.style.bottom = "10px";
+    notification.style.right = "10px";
+    notification.style.background = "#222";
+    notification.style.color = "#fff";
+    notification.style.padding = "10px";
+    notification.style.borderRadius = "5px";
+    document.body.appendChild(notification);
+
+    setTimeout(() => notification.remove(), 3000);
 }
 
 // ====================
 // AUTO SYNC EVERY 15s
 // ====================
-setInterval(fetchQuotesFromServer, 15000);
+setInterval(syncQuotes, 15000);
