@@ -1,50 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-    }
-    #quoteDisplay {
-      font-size: 1.5em;
-      margin: 20px 0;
-      padding: 15px;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-      min-height: 60px;
-    }
-    select, input, button {
-      padding: 8px;
-      margin: 5px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quotes & Services</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Dynamic Quote Generator</h1>
 
-  <!-- Category Selector -->
-  <div>
-    <label for="categorySelect">Choose Category:</label>
-    <select id="categorySelect"></select>
-    <button id="newQuote">Show New Quote</button>
-  </div>
+  <header>
+    <h1>Our Company</h1>
+  </header>
 
-  <!-- Quote Display -->
-  <div id="quoteDisplay">Your quote will appear here...</div>
+  <main>
+    <!-- WHAT WE DO SECTION -->
+    <section class="what-we-do">
+      <h2>What we do…</h2>
+      <div class="item-row">
+        <div class="item">Web Development</div>
+        <div class="item">App Development</div>
+        <div class="item">UI/UX Design</div>
+      </div>
+    </section>
 
-  <!-- Add New Quote -->
-  <h3>Add a New Quote</h3>
-  <div>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-    <button id="addQuoteBtn">Add Quote</button>
-  </div>
+    <!-- OUR RESULTS SECTION -->
+    <section class="our-results">
+      <h2>Our results</h2>
+      <div class="item-row">
+        <div class="item">+500 Clients</div>
+        <div class="item">98% Satisfaction</div>
+        <div class="item">Award Winning</div>
+      </div>
+    </section>
+
+    <!-- QUOTES SECTION -->
+    <section class="quotes-section">
+      <h2>Quotes Manager</h2>
+
+      <div id="quoteFormContainer">
+        <form id="quoteForm">
+          <input type="text" id="quoteText" placeholder="Enter quote" required />
+          <input type="text" id="quoteAuthor" placeholder="Enter author" required />
+          <button type="submit">Add Quote</button>
+        </form>
+      </div>
+
+      <div id="importExportContainer">
+        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+        <button id="exportQuotes" onclick="exportToJsonFile()">Export Quotes</button>
+      </div>
+
+      <ul id="quotesList"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Our Company</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

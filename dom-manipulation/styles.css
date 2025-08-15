@@ -1,0 +1,76 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background: #222;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+main {
+  padding: 1rem;
+}
+
+/* Items row styling */
+.item-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.item {
+  background: #f4f4f4;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+/* Animation all the time */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+.what-we-do .item,
+.our-results .item {
+  animation: pulse 3s infinite;
+}
+
+/* Extra hover animation */
+.item:hover {
+  transform: rotate(3deg) scale(1.1);
+  opacity: 0.85;
+}
+
+/* Quotes Section */
+.quotes-section {
+  margin-top: 2rem;
+}
+
+#quoteForm input {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+#quoteForm button {
+  padding: 0.5rem 1rem;
+}
+
+#quotesList {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+#quotesList li {
+  background: #eee;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+}
