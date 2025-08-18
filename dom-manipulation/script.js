@@ -169,3 +169,24 @@ function notifyUser(message) {
 // AUTO SYNC EVERY 15s
 // ====================
 setInterval(fetchQuotesFromServer, 15000);
+
+// ====================
+// DOWNLOAD QUOTES (Blob)
+// ====================
+function downloadQuotes() {
+    if (quotes.length === 0) {
+        alert("No quotes available to download.");
+        return;
+    }
+
+    const textData = quotes.map(q => `"${q.text}" - ${q.author} [${q.category}]`).join("\n");
+
+    // ✅ Blob included here
+    const blob = new Blob([textData], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "quotes.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
