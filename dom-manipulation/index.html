@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Quote Generator – Filtering with Web Storage</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Quote Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    #quoteDisplay {
+      font-size: 1.5em;
+      margin: 20px 0;
+      padding: 15px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      min-height: 60px;
+    }
+    select, input, button {
+      padding: 8px;
+      margin: 5px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Dynamic Quote Generator</h1>
-  </header>
+  <h1>Dynamic Quote Generator</h1>
 
-  <main>
-    <!-- Controls: Category Filter + Import/Export -->
-    <section class="controls">
-      <label for="categoryFilter"><strong>Filter by category:</strong></label>
-      <select id="categoryFilter" onchange="filterQuotes()">
-        <option value="all">All Categories</option>
-        <!-- Dynamically populated options -->
-      </select>
+  <!-- Category Selector -->
+  <div>
+    <label for="categorySelect">Choose Category:</label>
+    <select id="categorySelect"></select>
+    <button id="newQuote">Show New Quote</button>
+  </div>
 
-      <div class="import-export">
-        <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
-        <button id="exportQuotes" onclick="exportToJsonFile()">Export Quotes</button>
-      </div>
-    </section>
+  <!-- Quote Display -->
+  <div id="quoteDisplay">Your quote will appear here...</div>
 
-    <!-- Quote List -->
-    <section class="quotes">
-      <ul id="quotesList"></ul>
-    </section>
-
-    <!-- Add Quote Form -->
-    <section class="add-quote">
-      <h2>Add a New Quote</h2>
-      <form id="quoteForm">
-        <input type="text" id="quoteText" placeholder="Enter quote" required />
-        <input type="text" id="quoteCategory" placeholder="Enter category" required />
-        <button type="submit">Add Quote</button>
-      </form>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Dynamic Quote Generator</p>
-  </footer>
+  <!-- Add New Quote -->
+  <h3>Add a New Quote</h3>
+  <div>
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <button id="addQuoteBtn">Add Quote</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
